@@ -1,26 +1,41 @@
-import MeetingTypeList from '@/components/MeetingTypeList';
+import { Button } from '@/components/ui/button';
+import Teachers from './teachers/page';
+import { ArrowDown } from 'lucide-react';
+import Statics from './statics';
+import Features from './features';
+import Team from './team';
+import Hero from './hero';
+import Contact from './contact';
 
 const Home = () => {
-  const now = new Date();
-
-  const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  const date = (new Intl.DateTimeFormat('en-US', { dateStyle: 'full' })).format(now);
-
   return (
-    <section className="flex size-full flex-col gap-5 text-white">
-      <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
-        <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
-          <h2 className="glassmorphism max-w-[273px] rounded py-2 text-center text-base font-normal">
-            Upcoming Meeting at: 12:30 PM
-          </h2>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-4xl font-extrabold lg:text-7xl">{time}</h1>
-            <p className="text-lg font-medium text-sky-1 lg:text-2xl">{date}</p>
-          </div>
-        </div>
+    <section className="text-white mb-8">
+      <Hero />
+
+      <div id="statics" className="pt-28">
+        <Statics />
       </div>
 
-      <MeetingTypeList />
+      <div id="teachers" className="pt-16 -mb-8">
+        <Teachers limit={3} />
+        <a href="/teachers" className="flex justify-center mb-12 -mt-12">
+          <Button variant="secondary" size={'lg'} className="text-lg">
+            Show more <ArrowDown />
+          </Button>
+        </a>
+      </div>
+
+      <div id="features" className="pt-32 -mb-12">
+        <Features />
+      </div>
+
+      <div id="team" className="pt-20 -mb-20">
+        <Team />
+      </div>
+
+      <div id="contact" className="pt-32">
+        <Contact />
+      </div>
     </section>
   );
 };

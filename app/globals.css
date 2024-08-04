@@ -47,6 +47,7 @@
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
+
 .glassmorphism2 {
   background: rgba(18, 17, 17, 0.25);
   backdrop-filter: blur(8px);
@@ -54,14 +55,26 @@
 }
 
 /* ==== clerk class override ===== */
+.cl-userButtonBox {
+  border: 2px solid white;
+  padding: 2px;
+  border-radius: 100%;
+}
+
+.cl-avatarBox {
+  width: 2rem;
+  height: 2rem;
+}
 
 .cl-userButtonPopoverActionButtonIcon {
   color: white;
 }
 
 .cl-logoBox {
-  height: 40px;
+  height: 100px;
+  margin: -2rem 0;
 }
+
 .cl-dividerLine {
   background: #252a41;
   height: 2px;
@@ -74,6 +87,7 @@
 .cl-internal-wkkub3 {
   color: white;
 }
+
 .cl-userButtonPopoverActionButton {
   color: white;
 }
@@ -109,4 +123,15 @@
     animation-timing-function: ease-in;
     width: 100%;
   }
+}
+
+/* details summary override */
+details[open] summary::before {
+  content: '';
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  cursor: auto;
 }
