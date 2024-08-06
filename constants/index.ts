@@ -45,7 +45,7 @@ export const teacherSidebarLinks = [
 
   {
     imgURL: '/icons/schedule-calendar-svgrepo-com.svg',
-    route: '/app/upcoming',
+    route: '/app/schedule',
     label: 'Schedule',
   },
 

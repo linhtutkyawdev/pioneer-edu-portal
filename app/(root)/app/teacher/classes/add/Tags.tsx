@@ -5,7 +5,7 @@ import { Delete } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 const Tags = () => {
-  const [tags, setTags] = useState<string[]>(['HTML', 'CSS']);
+  const [tags, setTags] = useState<string[]>([]);
   const ref = useRef<HTMLInputElement>(null);
   return (
     <div>

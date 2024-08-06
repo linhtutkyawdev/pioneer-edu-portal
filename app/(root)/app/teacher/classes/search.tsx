@@ -43,7 +43,7 @@ export default function Search() {
             }
           }}
           className="block w-full p-4 ps-10 text-sm text-slate-900 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500"
-          placeholder="Teacher: Class Name"
+          placeholder="Teacher, Class or Tag Name"
           required
         />
       </div>

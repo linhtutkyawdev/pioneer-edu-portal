@@ -6,6 +6,7 @@ import { createClass } from './action';
 import Tags from './Tags';
 import ImageUpload from './ImgaeUpload';
 import DateTimePicker from './DateTimePicker';
+import { Save } from 'lucide-react';
 const Form = () => {
   const { isSignedIn, user } = useUser();
   if (!isSignedIn) return null;
@@ -25,7 +26,6 @@ const Form = () => {
             id="title"
             name="title"
             type="text"
-            value="HTML/CSS Basic"
             placeholder="HTML/CSS Basic"
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md  focus:border-blue-500  focus:outline-none focus:ring"
           />
@@ -62,7 +62,6 @@ const Form = () => {
             name="description"
             typeof="textarea"
             placeholder="HTML/CSS Basic is a basic course for beginners to learn HTML and CSS."
-            value="HTML/CSS Basic is a basic course for beginners to learn HTML and CSS."
             rows={5}
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md  focus:border-blue-500  focus:outline-none focus:ring"
           ></textarea>
@@ -92,7 +91,7 @@ const Form = () => {
       </div>
 
       <Button className="flex mt-6 text-center w-full py-2 leading-5 text-lg text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600">
-        Save
+        Save <Save className="ml-2" />
       </Button>
     </form>
   );

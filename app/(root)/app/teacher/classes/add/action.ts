@@ -1,10 +1,14 @@
 'use server';
 
 import { sql } from '@vercel/postgres';
-import { randomUUID } from 'crypto';
 import { writeFile } from 'fs/promises';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+
+type TimeInterval = {
+  start: string;
+  end: string;
+};
 
 const schema = z.object({
   title: z
@@ -77,6 +81,23 @@ const schema = z.object({
     .nullable(),
 });
 
+// function hasTimeConflict(interval1: TimeInterval, interval2: TimeInterval) {
+//   const s1 = Math.min(
+//     new Date(interval1.start).getTime(),
+//     new Date(interval2.start).getTime(),
+//   );
+
+//   if (s1 === new Date(interval1.start).getTime()) {
+//     const e1 = new Date(interval1.end).getTime();
+//     const s2 = new Date(interval2.start).getTime();
+//     return s1 == s2 || s2 <= e1;
+//   }
+
+//   const e1 = new Date(interval2.end).getTime();
+//   const s2 = new Date(interval1.start).getTime();
+//   return s1 == s2 || s2 <= e1;
+// }
+
 export async function createClass(formData: FormData) {
   const parse = schema.safeParse({
     title: formData.get('title'),
@@ -104,6 +125,36 @@ export async function createClass(formData: FormData) {
   const data = parse.data;
 
   try {
+    // get existing schedules
+    const { rows: r1 } = await sql`SELECT * FROM schedules
+      WHERE USER_ID = ${data.teacher_id}
+      AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
+      AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
+      AND START_HOUR = ${data.startHour}
+      ORDER BY LECTURE_DATE;`;
+
+    const { rows: r2 } = await sql`SELECT * FROM schedules
+      WHERE USER_ID = ${data.teacher_id}
+      AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
+      AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
+      AND START_HOUR > ${data.startHour}
+      AND START_HOUR <= ${data.endHour}
+      ORDER BY LECTURE_DATE;`;
+
+    const { rows: r3 } = await sql`SELECT * FROM schedules
+      WHERE USER_ID = ${data.teacher_id}
+      AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
+      AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
+      AND START_HOUR < ${data.startHour}
+      AND END_HOUR >= ${data.startHour}
+      ORDER BY LECTURE_DATE;`;
+
+    const conflicts = [...r1, ...r2, ...r3];
+    if (conflicts.length > 0) {
+      // return conflicts;
+      return { message: 'Time conflict' };
+    }
+
     // save banner
     const file = formData.get('banner') as File;
     if (file.size > 5 * 1024 * 1024) {
@@ -116,13 +167,15 @@ export async function createClass(formData: FormData) {
     ) {
       return { message: 'Invalid file type' };
     }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
     const bannerUrl = `/uploads/${new Date().toISOString().replace(/[-:.]/g, '')}${('' + Math.random()).substring(2, 8)}.${file.name.split('.').pop()}`;
     await writeFile(`./public${bannerUrl}`, buffer);
 
     // add class to db
-    await sql`INSERT INTO classes
+    const id = (
+      await sql`INSERT INTO classes
     (TEACHER_ID, TITLE, DESCRIPTION, BANNER_URL, 
     START_DATE, END_DATE, DAY_COUNT, 
     LECTURE_DAYS, TOTAL_LECTURE_DAY_COUNT, 
@@ -130,7 +183,26 @@ export async function createClass(formData: FormData) {
     (${data.teacher_id}, ${data.title}, ${data.description}, ${bannerUrl}, 
     ${data.startDate.toISOString().split('T')[0]}, ${data.endDate.toISOString().split('T')[0]}, ${data.dayCount}, 
     ${data.lectureDays}, ${data.totalLectureDayCount}, 
-    ${data.startHour}, ${data.endHour}, ${data.hourPerDay}, ${data.studentLimit}, ${data.tags})`;
+    ${data.startHour}, ${data.endHour}, ${data.hourPerDay}, ${data.studentLimit}, ${data.tags}) RETURNING id;`
+    ).rows[0].id as number;
+
+    // add schedule to db
+    let start = new Date(data.startDate);
+    let finish = new Date(data.endDate);
+    let dayMilliseconds = 1000 * 60 * 60 * 24;
+
+    while (start < finish) {
+      if (
+        data.lectureDays
+          .split(',')
+          .includes(start.toLocaleString('default', { weekday: 'short' }))
+      ) {
+        await sql`INSERT INTO schedules
+        (USER_ID, CLASS_ID, LECTURE_DATE, START_HOUR, END_HOUR) VALUES
+        (${data.teacher_id}, ${id}, ${start.toISOString().split('T')[0]}, ${data.startHour}, ${data.endHour});`;
+      }
+      start = new Date(+start + dayMilliseconds);
+    }
 
     revalidatePath('/');
     return { message: 'Success' };

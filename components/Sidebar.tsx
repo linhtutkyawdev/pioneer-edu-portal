@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { sidebarLinks, teacherSidebarLinks } from '@/constants';
 import { cn } from '@/lib/utils';
+import { Regex } from 'lucide-react';
 
 const Sidebar = ({ isTeacher }: { isTeacher: boolean }) => {
   const pathname = usePathname();
@@ -14,7 +15,9 @@ const Sidebar = ({ isTeacher }: { isTeacher: boolean }) => {
       <div className="flex flex-1 flex-col gap-6">
         {(isTeacher ? teacherSidebarLinks : sidebarLinks).map((item) => {
           const isActive =
-            pathname === item.route || pathname.endsWith(`${item.route}/`);
+            pathname === item.route ||
+            pathname.endsWith(`${item.route}/`) ||
+            new RegExp(item.route + '/-?\\d+$').test(pathname);
 
           return (
             <Link
