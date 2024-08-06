@@ -24,7 +24,7 @@ export async function markAsRead(formData: FormData) {
   const data = parse.data;
 
   try {
-    await sql`UPDATE contact set is_read = true where id = ${data.id};`;
+    await sql`UPDATE contacts set is_read = true where id = ${data.id};`;
     revalidatePath('/');
     // return { message: "Granted privileges" };
   } catch (e) {
@@ -44,7 +44,7 @@ export async function deleteContact(formData: FormData) {
   const data = parse.data;
 
   try {
-    await sql`DELETE FROM contact where id = ${data.id};`;
+    await sql`DELETE FROM contacts where id = ${data.id};`;
     revalidatePath('/');
     // return { message: "Granted privileges" };
   } catch (e) {

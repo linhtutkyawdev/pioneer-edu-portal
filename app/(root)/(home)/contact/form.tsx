@@ -47,7 +47,7 @@ const Form = () => {
       </div>
       <button
         type="submit"
-        className="w-full p-3 text-sm font-bold tracking-wide uppercase rounded bg-teal-400 text-gray-50"
+        className="w-full p-3 text-sm font-bold tracking-wide uppercase rounded bg-blue-1 text-gray-50"
       >
         Send Message
       </button>

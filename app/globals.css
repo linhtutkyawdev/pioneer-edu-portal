@@ -135,3 +135,7 @@ details[open] summary::before {
   left: 0;
   cursor: auto;
 }
+
+.no-down-arrow summary::marker {
+  content: '';
+}

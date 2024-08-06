@@ -37,7 +37,7 @@ export const createContact = async (formData: FormData) => {
   const data = parse.data;
 
   try {
-    await sql`INSERT INTO contact (name, email, message, is_read) VALUES ( ${data.name}, ${data.email}, ${data.message}, false);`;
+    await sql`INSERT INTO contacts (name, email, message, is_read) VALUES ( ${data.name}, ${data.email}, ${data.message}, false);`;
     revalidatePath('/');
     return { message: 'Contact created' };
   } catch (error) {

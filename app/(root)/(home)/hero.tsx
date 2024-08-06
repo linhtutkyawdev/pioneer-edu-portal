@@ -34,10 +34,10 @@ const Hero = () => {
           </a>
           <a
             rel="noopener noreferrer"
-            href="/courses"
+            href="/classes"
             className="px-8 py-3 text-lg font-semibold rounded bg-white text-black"
           >
-            View Courses
+            View Classes
             <svg
               fill="none"
               className="inline-block ml-2"

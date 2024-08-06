@@ -74,7 +74,7 @@ const MeetingTypeList = () => {
       <HomeCard
         img="/icons/add-meeting.svg"
         title="Apply More Class"
-        description="Buy More Courses"
+        description="Add More Classes"
         handleClick={() => setMeetingState('isInstantMeeting')}
       />
       <HomeCard

@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import Navbar from '@/components/Navbar';
 import { SignedIn } from '@clerk/nextjs';
 import { sql } from '@vercel/postgres';
-import { currentUser } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import AdminSidebar from '@/components/AdminSideBar';
 
 export const metadata: Metadata = {
@@ -14,20 +14,22 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
   const { rows } = await sql`Select * from admins;`;
-  const user = await currentUser();
-  if (!rows.find((row) => row.id == user?.id)) {
+  const { userId } = auth();
+  if (!rows.find((row) => row.id == userId)) {
     // not allowed
-    return <main className='text-gray-100 text-sm flex items-center justify-center h-screen'>
-      <span className="text-2xl mr-4 py-2 pr-4 border-r-[1px] border-gray-600">
-        403
-      </span>
-      This page is forbidden.
-    </main>
+    return (
+      <main className="text-gray-100 text-sm flex items-center justify-center h-screen">
+        <span className="text-2xl mr-4 py-2 pr-4 border-r-[1px] border-gray-600">
+          403
+        </span>
+        This page is forbidden.
+      </main>
+    );
   }
 
   return (
     <main className="relative">
-      <Navbar />
+      <Navbar badge="Admin" />
       <div className="flex">
         <AdminSidebar />
         <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
@@ -36,7 +38,10 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
       </div>
 
       <SignedIn>
-        <a href='/app' className="fixed bottom-0 right-0 my-6 mx-6 md:mx-14 z-50 px-6 py-4 flex items-center justify-center gap-2 bg-gradient-to-tr from-indigo-400 to to-teal-600 shadow-lg rounded-full text-white cursor-pointer">
+        <a
+          href="/app"
+          className="fixed bottom-0 right-0 my-6 mx-6 md:mx-14 z-50 px-6 py-4 flex items-center justify-center gap-2 bg-blue-1 shadow-lg rounded-full text-white cursor-pointer"
+        >
           <span>App</span>
           <svg
             viewBox="0 0 16 16"

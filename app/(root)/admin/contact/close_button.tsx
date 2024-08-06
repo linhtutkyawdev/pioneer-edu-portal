@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { XIcon } from 'lucide-react';
 
-const CloseButton = async () => {
+const CloseButton = () => {
   return (
     <Button
       variant={'ghost'}

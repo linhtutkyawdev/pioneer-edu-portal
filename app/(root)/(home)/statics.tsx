@@ -2,6 +2,7 @@ import { clerkClient } from '@clerk/nextjs/server';
 import { sql } from '@vercel/postgres';
 
 const Statics = async () => {
+  const classCount = (await sql`SELECT COUNT(id) FROM classes;`).rows[0].count;
   const teacherCount = (await sql`SELECT COUNT(id) FROM teachers;`).rows[0]
     .count;
   const adminCount = (await sql`SELECT COUNT(id) FROM admins;`).rows[0].count;
@@ -22,7 +23,7 @@ const Statics = async () => {
           <path d="M32,362.667,248.471,478.118a16,16,0,0,0,15.058,0L480,362.667V326.4L256,445.867,32,326.4Z"></path>
         </svg>
       ),
-      number: 'XXX',
+      number: classCount,
       title: 'Classes',
     },
     {
@@ -118,7 +119,7 @@ const Statics = async () => {
             key={index}
             className="flex overflow-hidden rounded-lg bg-slate-900"
           >
-            <div className="flex items-center justify-center px-4 bg-teal-400">
+            <div className="flex items-center justify-center px-4 bg-blue-1">
               {d.icon}
             </div>
             <div className="flex items-center justify-between flex-1 p-3">

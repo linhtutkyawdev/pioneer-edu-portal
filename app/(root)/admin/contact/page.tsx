@@ -7,11 +7,11 @@ import CloseButton from './close_button';
 
 const Users = async () => {
   const unreadContactRows = (
-    await sql`Select * from contact where is_read = false order by id;`
+    await sql`Select * from contacts where is_read = false order by id;`
   ).rows;
 
   const readContactRows = (
-    await sql`Select * from contact where is_read = true order by id;`
+    await sql`Select * from contacts where is_read = true order by id;`
   ).rows;
 
   return (

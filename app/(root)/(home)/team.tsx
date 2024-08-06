@@ -17,7 +17,7 @@ const Team = () => {
               className="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
               src="images/avatar-1.jpeg"
             />
-            <p className="text-xl font-semibold leading-tight text-teal-400">
+            <p className="text-xl font-semibold leading-tight text-blue-1">
               Leroy Jenkins
             </p>
             <p className="dark:text-gray-600">Visual Designer</p>
@@ -28,7 +28,7 @@ const Team = () => {
               className="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
               src="images/avatar-1.jpeg"
             />
-            <p className="text-xl font-semibold leading-tight text-teal-400">
+            <p className="text-xl font-semibold leading-tight text-blue-1">
               Leroy Jenkins
             </p>
             <p className="dark:text-gray-600">Visual Designer</p>
@@ -39,7 +39,7 @@ const Team = () => {
               className="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
               src="images/avatar-1.jpeg"
             />
-            <p className="text-xl font-semibold leading-tight text-teal-400">
+            <p className="text-xl font-semibold leading-tight text-blue-1">
               Leroy Jenkins
             </p>
             <p className="dark:text-gray-600">Visual Designer</p>
@@ -50,7 +50,7 @@ const Team = () => {
               className="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
               src="images/avatar-1.jpeg"
             />
-            <p className="text-xl font-semibold leading-tight text-teal-400">
+            <p className="text-xl font-semibold leading-tight text-blue-1">
               Leroy Jenkins
             </p>
             <p className="dark:text-gray-600">Visual Designer</p>
@@ -61,7 +61,7 @@ const Team = () => {
               className="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
               src="images/avatar-1.jpeg"
             />
-            <p className="text-xl font-semibold leading-tight text-teal-400">
+            <p className="text-xl font-semibold leading-tight text-blue-1">
               Leroy Jenkins
             </p>
             <p className="dark:text-gray-600">Visual Designer</p>
@@ -72,7 +72,7 @@ const Team = () => {
               className="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
               src="images/avatar-1.jpeg"
             />
-            <p className="text-xl font-semibold leading-tight text-teal-400">
+            <p className="text-xl font-semibold leading-tight text-blue-1">
               Leroy Jenkins
             </p>
             <p className="dark:text-gray-600">Visual Designer</p>
