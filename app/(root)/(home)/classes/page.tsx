@@ -1,17 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { sql } from '@vercel/postgres';
 import Search from '../../app/teacher/classes/search';
-import Teacher from './teacher';
 import { Send } from 'lucide-react';
 import { clerkClient } from '@clerk/nextjs/server';
 
-const ClassBody = async ({ row }: { row: any }) => {
+export const ClassBody = async ({ row }: { row: any }) => {
   if (!row.teacher_id) return null;
-  const techerName = (await clerkClient.users.getUser(row.teacher_id)).fullName;
+  const teacherName = (await clerkClient.users.getUser(row.teacher_id))
+    .fullName;
   return (
     <div
       key={row.id}
-      data-name={`${techerName} | ${row.title} | ${row.tags
+      data-name={`${teacherName} | ${row.title} | ${row.tags
+        .replace(' ', '')
         .split(',')
         .map((tag: string) => '#' + tag)
         .join(' | ')}`}
@@ -20,8 +21,6 @@ const ClassBody = async ({ row }: { row: any }) => {
       <img
         className="object-cover h-48 w-full hover:scale-110 hover:-translate-y-2 transition duration-500"
         src={row.banner_url}
-        width="304"
-        height="192"
         alt="Course 01"
       />
       <div className="flex-1 flex flex-col p-6">
@@ -29,7 +28,15 @@ const ClassBody = async ({ row }: { row: any }) => {
           <header className="mb-2">
             <h2 className="text-xl font-extrabold leading-snug">{row.title}</h2>
             <h3 className="font-semibold text-sm">
-              Teacher : <Teacher teacher_id={row.teacher_id} />
+              Teacher :{' '}
+              <a href={`/teachers/${row.teacher_id}`}>
+                <Button
+                  variant="link"
+                  className="text-blue-1 p-1 font-semibold rounded-sm"
+                >
+                  {teacherName}
+                </Button>
+              </a>
             </h3>
           </header>
 
@@ -70,7 +77,7 @@ const Classes = async ({ limit }: { limit?: number }) => {
       )}
 
       <div className="relative flex flex-col justify-center overflow-hidden mt-20">
-        <div className="w-full max-w-5xl mx-auto px-4 md:px-6">
+        <div className={'w-full max-w-5xl mx-auto px-4 md:px-12'}>
           <div className="max-w-xs mx-auto grid gap-6 lg:grid-cols-3 items-start lg:max-w-none mb-8">
             {rows.map((row) => (
               <ClassBody key={row.id} row={row} />

@@ -3,6 +3,7 @@ import TeacherProfile from '../../teachers/[id]/page';
 import { Button } from '@/components/ui/button';
 import { clerkClient } from '@clerk/nextjs/server';
 import { ArrowBigRight, Send } from 'lucide-react';
+import { getHourString } from '@/app/(root)/app/schedule/page';
 
 type classData = {
   id: string;
@@ -22,7 +23,7 @@ type classData = {
   tags?: string;
 };
 
-function ShowDate({ date }: { date: Date }) {
+export function ShowDate({ date }: { date: Date }) {
   return (
     <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center text-black">
       <div className="block rounded shadow-lg overflow-hidden  text-center ">
@@ -50,7 +51,7 @@ function ShowDate({ date }: { date: Date }) {
   );
 }
 
-function ShowDays({ days }: { days: string }) {
+export function ShowDays({ days }: { days: string }) {
   return (
     <div className="flex text-white gap-2 w-full justify-between my-4">
       {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => {
@@ -81,7 +82,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const { rows } = await sql`SELECT * FROM classes WHERE id = ${params.id}`;
   if (rows.length == 0) return <div>Class not found</div>;
   const { rows: rows2 } =
-    await sql`SELECT * FROM classes WHERE id = ${parseInt(params.id) + 1}`;
+    await sql`SELECT * FROM classes WHERE id = ${parseInt(params.id) - 1}`;
   const classData = rows[0] as classData;
   const classData2 = rows2[0] as classData;
   const teacher2 =
@@ -141,10 +142,8 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
           <div className="py-8 text-center w-4/5 mx-auto">
             In this class, you can attend the lecture from{' '}
-            {classData.start_hour.split(':')[0]}:
-            {classData.start_hour.split(':')[1]} to{' '}
-            {classData.end_hour.split(':')[0]}:
-            {classData.end_hour.split(':')[1]} every lecture day. So, the class
+            {getHourString(classData.start_hour)} to{' '}
+            {getHourString(classData.end_hour)} every lecture day. So, the class
             will take you{' '}
             {classData.total_lecture_day_count * classData.hour_per_day} lecture
             hours in total ({classData.hour_per_day} hours per lecture day).
@@ -152,7 +151,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div className="text-end text-sm">
               {classData.tags
                 ?.split(',')
-                .map((tag) => `#${tag}`)
+                .map((tag: string) => `#${tag.replace(' ', '')}`)
                 .join(', ')}
             </div>
           </div>

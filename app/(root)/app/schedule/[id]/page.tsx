@@ -2,6 +2,8 @@ import { sql } from '@vercel/postgres';
 import { auth } from '@clerk/nextjs/server';
 import Days from '../Days';
 import Task from '../Task';
+import { PartyPopper } from 'lucide-react';
+import { getHourString } from '../page';
 
 const Page = async ({ params: { id } }: { params: { id: string } }) => {
   const { userId } = auth();
@@ -11,7 +13,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     : today;
 
   const { rows } =
-    await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toISOString().split('T')[0]} order by start_hour;`;
+    await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toLocaleDateString()} order by start_hour;`;
 
   return (
     <div className="container">
@@ -39,7 +41,11 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               <div className="flex flex-row justify-start items-center pt-20 pb-20">
                 <div className="flex flex-grow flex-col font-mono text-xl font-semibold	text-gray-200 antialiased">
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
-                  <div className="px-2 py-8">No upcoming classes</div>
+                  <div className="px-2 py-8 flex">
+                    No classes fot scheduled this day, Yay!{' '}
+                    <PartyPopper className="ml-4" />
+                    {selectedDate.toLocaleDateString()}
+                  </div>
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                 </div>
               </div>
@@ -52,7 +58,8 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 <div className="flex flex-grow flex-col font-mono text-xl font-semibold	text-gray-200 antialiased">
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                   <div className="px-2 py-8">
-                    {row.start_hour.slice(0, 5)} to {row.end_hour.slice(0, 5)}
+                    {getHourString(row.start_hour)} to{' '}
+                    {getHourString(row.end_hour)}
                   </div>
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                 </div>

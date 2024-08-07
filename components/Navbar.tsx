@@ -11,6 +11,7 @@ import {
 import MobileNav from './MobileNav';
 import { Button } from './ui/button';
 import HomeLinks from './HomeLinks';
+import { DoorOpen, PartyPopper } from 'lucide-react';
 
 const Navbar = ({ badge }: { badge?: 'Teacher' | 'Admin' }) => {
   return (
@@ -33,16 +34,6 @@ const Navbar = ({ badge }: { badge?: 'Teacher' | 'Admin' }) => {
         )}
       </Link>
       <div className="flex-between gap-5">
-        <SignedOut>
-          <SignUpButton>
-            <Button variant="link" className="text-white">
-              Register
-            </Button>
-          </SignUpButton>
-          <SignInButton>
-            <Button variant="secondary">Sign In</Button>
-          </SignInButton>
-        </SignedOut>
         <HomeLinks />
         <a href="/classes">
           <Button variant="link" className="text-white">
@@ -63,6 +54,19 @@ const Navbar = ({ badge }: { badge?: 'Teacher' | 'Admin' }) => {
             View Classes
           </Button>
         </a>
+        <SignedOut>
+          <SignUpButton>
+            <Button variant="link" className="text-white">
+              <PartyPopper className="mr-2 w-4 h-4" /> Register
+            </Button>
+          </SignUpButton>
+          <SignInButton>
+            <Button variant="secondary">
+              <DoorOpen className="mr-2 w-4 h-4" />
+              Sign In
+            </Button>
+          </SignInButton>
+        </SignedOut>
         <SignedIn>
           <UserButton />
         </SignedIn>

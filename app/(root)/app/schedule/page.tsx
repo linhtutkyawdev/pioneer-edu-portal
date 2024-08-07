@@ -3,6 +3,20 @@ import { auth } from '@clerk/nextjs/server';
 import Days from './Days';
 import Task from './Task';
 
+export const getHourString = (text: string) => {
+  const t = new Date();
+  let [hours, minutes, seconds] = text.split(':');
+
+  t.setHours(+hours);
+  t.setMinutes(+minutes);
+  t.setSeconds(+seconds);
+
+  return t.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
 const Page = async () => {
   const { userId } = auth();
   const today = new Date();
@@ -50,7 +64,8 @@ const Page = async () => {
                 <div className="flex flex-grow flex-col font-mono text-xl font-semibold	text-gray-200 antialiased">
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                   <div className="px-2 py-8">
-                    {row.start_hour.slice(0, 5)} to {row.end_hour.slice(0, 5)}
+                    {getHourString(row.start_hour)} to{' '}
+                    {getHourString(row.end_hour)}
                   </div>
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                 </div>

@@ -138,7 +138,7 @@ export async function createClass(formData: FormData) {
       AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
       AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
       AND START_HOUR > ${data.startHour}
-      AND START_HOUR <= ${data.endHour}
+      AND START_HOUR < ${data.endHour}
       ORDER BY LECTURE_DATE;`;
 
     const { rows: r3 } = await sql`SELECT * FROM schedules
@@ -146,7 +146,7 @@ export async function createClass(formData: FormData) {
       AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
       AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
       AND START_HOUR < ${data.startHour}
-      AND END_HOUR >= ${data.startHour}
+      AND END_HOUR > ${data.startHour}
       ORDER BY LECTURE_DATE;`;
 
     const conflicts = [...r1, ...r2, ...r3];

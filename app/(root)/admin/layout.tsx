@@ -40,7 +40,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
       <SignedIn>
         <a
           href="/app"
-          className="fixed bottom-0 right-0 my-6 mx-6 md:mx-14 z-50 px-6 py-4 flex items-center justify-center gap-2 bg-blue-1 shadow-lg rounded-full text-white cursor-pointer"
+          className="fixed bottom-0 right-0 m-6 md:mx-16 z-50 px-6 py-4 flex items-center justify-center gap-2 bg-blue-1 shadow-lg rounded-full text-white cursor-pointer"
         >
           <span>App</span>
           <svg
