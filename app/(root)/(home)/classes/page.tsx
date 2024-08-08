@@ -1,11 +1,23 @@
 import { Button } from '@/components/ui/button';
 import { sql } from '@vercel/postgres';
 import Search from '../../app/teacher/classes/search';
-import { Send } from 'lucide-react';
-import { clerkClient } from '@clerk/nextjs/server';
+import { Castle, Send } from 'lucide-react';
+import { auth, clerkClient } from '@clerk/nextjs/server';
+import { createStudentApplication } from './action';
+import { SignInButton } from '@clerk/nextjs';
 
 export const ClassBody = async ({ row }: { row: any }) => {
+  const { userId } = auth();
+
   if (!row.teacher_id) return null;
+
+  const isClassTeacher = userId && userId == row.teacher_id;
+  const isClassStudent =
+    userId &&
+    (
+      await sql`SELECT * from student_applicants where class_id = ${row.id} and student_id = ${userId};`
+    ).rows[0];
+
   const teacherName = (await clerkClient.users.getUser(row.teacher_id))
     .fullName;
   return (
@@ -26,7 +38,9 @@ export const ClassBody = async ({ row }: { row: any }) => {
       <div className="flex-1 flex flex-col p-6">
         <div className="flex-1">
           <header className="mb-2">
-            <h2 className="text-xl font-extrabold leading-snug">{row.title}</h2>
+            <h2 className="text-xl font-extrabold leading-snug h-16 overflow-hidden">
+              {row.title}
+            </h2>
             <h3 className="font-semibold text-sm">
               Teacher :{' '}
               <a href={`/teachers/${row.teacher_id}`}>
@@ -40,18 +54,49 @@ export const ClassBody = async ({ row }: { row: any }) => {
             </h3>
           </header>
 
-          <div className="text-sm mb-8">
+          <div className="text-sm mb-8 line-clamp-3">
             <p>{row.description}</p>
           </div>
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-between space-x-4">
           <a href={`/classes/${row.id}`}>
             <Button variant="secondary">View</Button>
           </a>
-          <Button className="w-max mx-auto mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
-            Apply Now <Send className="ml-2" />
-          </Button>
+          {!userId ? (
+            <SignInButton>
+              <Button className="w-max mx-auto mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                Apply Now <Send className="ml-2" />
+              </Button>
+            </SignInButton>
+          ) : isClassTeacher ? (
+            <a
+              className="w-max mx-auto mb-4"
+              href={`/classes/${row.id}/applicants`}
+            >
+              <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                Applicants <Send className="ml-2" />
+              </Button>
+            </a>
+          ) : isClassStudent ? (
+            <div className="w-max mx-auto relative">
+              <Button
+                disabled
+                className="mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110"
+              >
+                Already Applied <Send className="ml-2" />
+              </Button>
+            </div>
+          ) : (
+            <form action={createStudentApplication}>
+              <input type="number" name="class_id" hidden value={row.id} />
+              <input type="text" name="user_id" hidden value={userId} />
+
+              <Button className="w-max mx-auto mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                Apply Now <Send className="ml-2" />
+              </Button>
+            </form>
+          )}
         </div>
       </div>
     </div>
@@ -71,6 +116,13 @@ const Classes = async ({ limit }: { limit?: number }) => {
         <div className="fixed bg-dark-1/30 backdrop-blur-xl py-4 left-0 top-20 z-10 w-full">
           <div className="container px-16 flex flex-row items-center justify-between mx-auto">
             <h2 className="w-full text-4xl font-bold leading-none">Classes</h2>
+
+            <a href="/classes/applications">
+              <Button variant="link" className="text-white">
+                <Castle className="mr-2 w-4 h-4" />
+                Applied Classes
+              </Button>
+            </a>
             <Search />
           </div>
         </div>

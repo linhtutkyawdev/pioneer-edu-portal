@@ -1,11 +1,13 @@
 import { sql } from '@vercel/postgres';
 import TeacherProfile from '../../teachers/[id]/page';
 import { Button } from '@/components/ui/button';
-import { clerkClient } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { ArrowBigRight, Send } from 'lucide-react';
 import { getHourString } from '@/app/(root)/app/schedule/page';
+import { createStudentApplication } from '../action';
+import { SignInButton } from '@clerk/nextjs';
 
-type classData = {
+export type classData = {
   id: string;
   title: string;
   teacher_id: string;
@@ -80,13 +82,22 @@ export function ShowDays({ days }: { days: string }) {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { rows } = await sql`SELECT * FROM classes WHERE id = ${params.id}`;
-  if (rows.length == 0) return <div>Class not found</div>;
+  if (rows.length === 0) return <div>Class not found</div>;
+
   const { rows: rows2 } =
     await sql`SELECT * FROM classes WHERE id = ${parseInt(params.id) - 1}`;
   const classData = rows[0] as classData;
   const classData2 = rows2[0] as classData;
   const teacher2 =
     classData2 && (await clerkClient.users.getUser(classData2.teacher_id));
+
+  const { userId } = auth();
+  const isClassTeacher = userId && userId == classData.teacher_id;
+  const isClassStudent =
+    userId &&
+    (
+      await sql`SELECT * from student_applicants where class_id = ${classData.id} and student_id = ${userId};`
+    ).rows[0];
   return (
     <>
       <div
@@ -155,9 +166,51 @@ export default async function Page({ params }: { params: { id: string } }) {
                 .join(', ')}
             </div>
           </div>
-          <Button className="w-max mx-auto mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
-            Apply Now <Send className="ml-2" />
-          </Button>
+          {!userId ? (
+            <SignInButton>
+              <Button className="w-max mx-auto mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                Apply Now <Send className="ml-2" />
+              </Button>
+            </SignInButton>
+          ) : isClassTeacher ? (
+            <a
+              className="w-max mx-auto mb-4"
+              href={`/classes/${classData.id}/applicants`}
+            >
+              <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                Check Student Applications <Send className="ml-2" />
+              </Button>
+            </a>
+          ) : isClassStudent ? (
+            <div className="w-max mx-auto relative">
+              <Button
+                disabled
+                className="mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110"
+              >
+                Already Applied <Send className="ml-2" />
+              </Button>
+              <div className="absolute top-0 right-0 -mt-4 -mr-12 text-xs bg-slate-900 rounded-full px-2 py-1">
+                {isClassStudent.status}
+              </div>
+            </div>
+          ) : (
+            <form
+              className="w-max mx-auto mb-4"
+              action={createStudentApplication}
+            >
+              <input
+                type="number"
+                name="class_id"
+                hidden
+                value={classData.id}
+              />
+              <input type="text" name="user_id" hidden value={userId} />
+
+              <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                Apply Now <Send className="ml-2" />
+              </Button>
+            </form>
+          )}
         </div>
       </div>
       {classData2 && teacher2 && (

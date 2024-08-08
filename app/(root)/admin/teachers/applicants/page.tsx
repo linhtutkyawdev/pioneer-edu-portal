@@ -3,13 +3,18 @@ import { sql } from '@vercel/postgres';
 import Search from '../../search';
 import AcceptButton from './accept_button';
 import DenyButton from './deny_button';
+import Select from '../../contact/select';
 
 const Users = async () => {
-  const { rows } =
+  const { rows: pendingRows } =
     await sql`Select * from teacher_applicants where status = 'pending';`;
-  const applicantIdList = rows.map((row) => row.id);
-  const applicantList = await Promise.all(
-    applicantIdList.map((id) => clerkClient.users.getUser(id)),
+  const { rows: rejectedRows } =
+    await sql`Select * from teacher_applicants where status = 'rejected';`;
+  const pendingUserList = await Promise.all(
+    pendingRows.map((row) => clerkClient.users.getUser(row.id)),
+  );
+  const rejectedUserList = await Promise.all(
+    rejectedRows.map((row) => clerkClient.users.getUser(row.id)),
   );
 
   return (
@@ -31,40 +36,85 @@ const Users = async () => {
               <th className="p-3">Avatar</th>
               <th className="p-3">Name</th>
               <th className="p-3">Email</th>
-              <th colSpan={2} className="p-3">
+              <th className="p-3">
                 <Search />
+              </th>
+              <th className="p-3">
+                <Select values={['pending', 'rejected']} />
               </th>
             </tr>
           </thead>
           <tbody className="border-b">
-            {applicantList.map((user) => {
-              return (
-                <tr
-                  key={user.id}
-                  className="user-row bg-slate-800 border-b-8 border-slate-700"
-                  data-name={user.fullName}
-                >
-                  <td className="px-3 py-2">
-                    <img
-                      src={user.imageUrl}
-                      className="rounded-full object-cover w-12 h-12"
-                    />
-                  </td>
-                  <td className="px-3 py-2">
-                    <p>{user.fullName}</p>
-                  </td>
-                  <td className="px-3 py-2">
-                    <p>{user.primaryEmailAddress?.emailAddress}</p>
-                  </td>
-                  <td className="px-3 py-2">
-                    <AcceptButton id={user.id} />
-                  </td>
-                  <td className="px-3 py-2">
-                    <DenyButton id={user.id} />
-                  </td>
-                </tr>
-              );
-            })}
+            {pendingUserList.length !== 0 ? (
+              pendingUserList.map((user) => {
+                return (
+                  <tr
+                    key={user.id}
+                    className="user-row pending bg-slate-800 border-b-8 border-slate-700"
+                    data-name={user.fullName}
+                  >
+                    <td className="px-3 py-2">
+                      <img
+                        src={user.imageUrl}
+                        className="rounded-full object-cover w-12 h-12"
+                      />
+                    </td>
+                    <td className="px-3 py-2">
+                      <p>{user.fullName}</p>
+                    </td>
+                    <td className="px-3 py-2">
+                      <p>{user.primaryEmailAddress?.emailAddress}</p>
+                    </td>
+                    <td className="px-3 py-3 flex justify-end">
+                      <AcceptButton id={user.id} />
+                    </td>
+                    <td className="px-3 py-2">
+                      <DenyButton id={user.id} />
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className="pending bg-slate-800 border-b-8 border-slate-700">
+                <td colSpan={5} className="px-3 py-4 w-full">
+                  No new teacher applications!
+                </td>
+              </tr>
+            )}
+            {rejectedUserList.length !== 0 ? (
+              rejectedUserList.map((user) => {
+                return (
+                  <tr
+                    key={user.id}
+                    className="user-row rejected bg-slate-800 border-b-8 border-slate-700 hidden"
+                    data-name={user.fullName}
+                  >
+                    <td className="px-3 py-2">
+                      <img
+                        src={user.imageUrl}
+                        className="rounded-full object-cover w-12 h-12"
+                      />
+                    </td>
+                    <td className="px-3 py-2">
+                      <p>{user.fullName}</p>
+                    </td>
+                    <td className="px-3 py-2">
+                      <p>{user.primaryEmailAddress?.emailAddress}</p>
+                    </td>
+                    <td />
+                    <td className="px-3 py-3 flex justify-end">
+                      <AcceptButton id={user.id} />
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className="rejected bg-slate-800 border-b-8 border-slate-700 hidden">
+                <td colSpan={5} className="px-3 py-4 w-full">
+                  No user have been rejected yet!
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
