@@ -3,9 +3,10 @@ import { Button } from '@/components/ui/button';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { sql } from '@vercel/postgres';
 import { Plus } from 'lucide-react';
+import JoinButton from './JoinButton';
 
 export const getDateFromTime = (time: string, date?: Date) => {
-  const d = date || new Date();
+  const d = date ? new Date(date) : new Date();
   const [hours, minutes, seconds] = time.split(':');
 
   d.setHours(+hours);
@@ -21,8 +22,9 @@ const Home = async () => {
   if (!userId) return null;
 
   const now = new Date();
-  // now.setDate(13);
-  // now.setHours(now.getHours() + 6);
+  now.setDate(12);
+  now.setHours(now.getHours() + 4);
+  // now.setTime(now.getTime() - 25 * 60 * 1000);
 
   const schedule = (
     await sql`select lecture_date, start_hour, class_id from schedules 
@@ -114,9 +116,12 @@ const Home = async () => {
                   {date}
                 </p>
               </div>
-              <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
-                Join Now <Plus />
-              </Button>
+              <JoinButton
+                dateTime={getDateFromTime(schedule.start_hour, lectureDate)}
+                meetingId={classData.teacher_id + '-lecture-' + classData.id}
+                description={'Lecture : ' + classData.title}
+                isTeacher={userId === classData.teacher_id}
+              />
             </div>
           </div>
         </div>

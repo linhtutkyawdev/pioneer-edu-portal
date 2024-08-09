@@ -34,7 +34,7 @@ const Users = async () => {
                 <Search />
               </th>
               <th className="p-3">
-                <Select value1="unread" value2="read" />
+                <Select values={['unread', 'read']} />
               </th>
             </tr>
           </thead>

@@ -54,7 +54,7 @@ const MeetingTypeList = () => {
       });
       setCallDetail(call);
       if (!values.description) {
-        router.push(`/meeting/${call.id}`);
+        router.push(`app/meeting/${call.id}`);
       }
       toast({
         title: 'Meeting Created',
@@ -67,34 +67,34 @@ const MeetingTypeList = () => {
 
   if (!client || !user) return <Loader />;
 
-  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetail?.id}`;
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/app/meeting/${callDetail?.id}`;
 
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       <HomeCard
         img="/icons/join-meeting.svg"
         title="Join Class"
-        description="via invitation link"
+        description="teacher approval required if the class is not applied"
         className="bg-emerald-500"
         handleClick={() => setMeetingState('isJoiningMeeting')}
       />
       <HomeCard
         img="/icons/add-meeting.svg"
-        title="Apply More Class"
-        description="Add More Classes"
+        title="Instant Class"
+        description="instantly create a streaming session and invite your students"
         handleClick={() => setMeetingState('isInstantMeeting')}
       />
       <HomeCard
         img="/icons/schedule.svg"
         title="Check Schedule"
-        description="Check your schedule"
+        description="check your schedule for upcoming classes (day by day)"
         className="bg-purple-1"
         handleClick={() => setMeetingState('isScheduleMeeting')}
       />
       <HomeCard
         img="/icons/recordings.svg"
         title="View Recordings"
-        description="Meeting Recordings"
+        description="view your recordings publish them for students"
         className="bg-yellow-1"
         handleClick={() => router.push('/recordings')}
       />

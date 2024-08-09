@@ -176,14 +176,14 @@ export async function createClass(formData: FormData) {
     // add class to db
     const id = (
       await sql`INSERT INTO classes
-    (TEACHER_ID, TITLE, DESCRIPTION, BANNER_URL, 
-    START_DATE, END_DATE, DAY_COUNT, 
-    LECTURE_DAYS, TOTAL_LECTURE_DAY_COUNT, 
-    START_HOUR, END_HOUR, HOUR_PER_DAY, STUDENT_LIMIT, TAGS) VALUES 
-    (${data.teacher_id}, ${data.title}, ${data.description}, ${bannerUrl}, 
-    ${data.startDate.toISOString().split('T')[0]}, ${data.endDate.toISOString().split('T')[0]}, ${data.dayCount}, 
-    ${data.lectureDays}, ${data.totalLectureDayCount}, 
-    ${data.startHour}, ${data.endHour}, ${data.hourPerDay}, ${data.studentLimit}, ${data.tags}) RETURNING id;`
+      (TEACHER_ID, TITLE, DESCRIPTION, BANNER_URL, 
+      START_DATE, END_DATE, DAY_COUNT, 
+      LECTURE_DAYS, TOTAL_LECTURE_DAY_COUNT, 
+      START_HOUR, END_HOUR, HOUR_PER_DAY, STUDENT_LIMIT, TAGS) VALUES 
+      (${data.teacher_id}, ${data.title}, ${data.description}, ${bannerUrl}, 
+      ${data.startDate.toISOString().split('T')[0]}, ${data.endDate.toISOString().split('T')[0]}, ${data.dayCount}, 
+      ${data.lectureDays}, ${data.totalLectureDayCount}, 
+      ${data.startHour}, ${data.endHour}, ${data.hourPerDay}, ${data.studentLimit}, ${data.tags}) RETURNING id;`
     ).rows[0].id as number;
 
     // add schedule to db

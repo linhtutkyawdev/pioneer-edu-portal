@@ -38,7 +38,11 @@ const TableBody = async ({
           <p>{status}</p>
         </td>
         <td className="px-3 py-2">
-          <CancelButton id={user_id} />
+          <CancelButton
+            isPending={status === 'pending'}
+            id={user_id}
+            class_id={parseInt(class_id)}
+          />
         </td>
       </tr>
     )
@@ -81,6 +85,7 @@ const Applications = async () => {
                 return (
                   userId && (
                     <TableBody
+                      key={r.class_id}
                       user_id={userId}
                       class_id={r.class_id}
                       status={r.status}

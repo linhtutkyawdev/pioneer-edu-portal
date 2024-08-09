@@ -5,11 +5,10 @@ import { usePathname } from 'next/navigation';
 
 import { sidebarLinks, teacherSidebarLinks } from '@/constants';
 import { cn } from '@/lib/utils';
-import { Regex } from 'lucide-react';
 
 const Sidebar = ({ isTeacher }: { isTeacher: boolean }) => {
   const pathname = usePathname();
-
+  if (pathname.startsWith('/app/meeting')) return null;
   return (
     <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  bg-dark-1 p-6 pt-28 text-white max-sm:hidden lg:w-[264px] z-20">
       <div className="flex flex-1 flex-col gap-6">

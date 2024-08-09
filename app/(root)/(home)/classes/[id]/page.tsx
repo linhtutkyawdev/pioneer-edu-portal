@@ -8,7 +8,7 @@ import { createStudentApplication } from '../action';
 import { SignInButton } from '@clerk/nextjs';
 
 export type classData = {
-  id: string;
+  id: number;
   title: string;
   teacher_id: string;
   description: string;
@@ -98,6 +98,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     (
       await sql`SELECT * from student_applicants where class_id = ${classData.id} and student_id = ${userId};`
     ).rows[0];
+  const classStudentCount =
+    userId &&
+    (
+      await sql`SELECT COUNT(student_id) from student_applicants where class_id = ${classData.id};`
+    ).rows[0].count;
   return (
     <>
       <div
@@ -158,7 +163,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             will take you{' '}
             {classData.total_lecture_day_count * classData.hour_per_day} lecture
             hours in total ({classData.hour_per_day} hours per lecture day).
-            Hurry up! XX/{classData.student_limit} students have applied.
+            Hurry up! {classStudentCount} students have already applied and only{' '}
+            {classData.student_limit} will be accepted.
             <div className="text-end text-sm">
               {classData.tags
                 ?.split(',')

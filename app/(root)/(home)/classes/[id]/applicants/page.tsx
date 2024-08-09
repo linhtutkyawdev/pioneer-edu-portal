@@ -77,6 +77,7 @@ const Teachers = async ({ classData }: { classData: classData }) => {
                     <td className="px-3 py-3 flex justify-end">
                       <AcceptButton
                         id={user.id}
+                        class_id={classData.id}
                         warn={acceptedRows.length >= classData.student_limit}
                         warnMsg="Student limit has reached!!\nAre you sure you want to continue?"
                       />
@@ -84,6 +85,7 @@ const Teachers = async ({ classData }: { classData: classData }) => {
                     <td className="px-3 py-2">
                       <DenyButton
                         id={user.id}
+                        class_id={classData.id}
                         warn
                         warnMsg="Are you sure you want to reject?"
                       />
@@ -122,6 +124,7 @@ const Teachers = async ({ classData }: { classData: classData }) => {
                     <td className="px-3 py-3 flex justify-end">
                       <DenyButton
                         id={user.id}
+                        class_id={classData.id}
                         warn
                         warnMsg="Are you sure you want to reject?"
                       />
@@ -160,6 +163,7 @@ const Teachers = async ({ classData }: { classData: classData }) => {
                     <td className="px-3 py-3 flex justify-end">
                       <AcceptButton
                         id={user.id}
+                        class_id={classData.id}
                         warn={acceptedRows.length >= classData.student_limit}
                         warnMsg="Student limit has reached!!\nAre you sure you want to continue?"
                       />

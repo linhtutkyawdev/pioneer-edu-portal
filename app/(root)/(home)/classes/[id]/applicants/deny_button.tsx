@@ -21,10 +21,12 @@ function SubmitButton() {
 
 export default function DenyButton({
   id,
+  class_id,
   warn,
   warnMsg,
 }: {
   id: string;
+  class_id: number;
   warn?: boolean;
   warnMsg?: string;
 }) {
@@ -38,6 +40,14 @@ export default function DenyButton({
       }}
     >
       <input type="text" name="id" required hidden value={id} readOnly />
+      <input
+        type="number"
+        name="class_id"
+        required
+        hidden
+        value={class_id}
+        readOnly
+      />
       <SubmitButton />
     </form>
   );

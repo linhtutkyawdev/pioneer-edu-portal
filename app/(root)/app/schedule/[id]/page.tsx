@@ -41,11 +41,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               <div className="flex flex-row justify-start items-center pt-20 pb-20">
                 <div className="flex flex-grow flex-col font-mono text-xl font-semibold	text-gray-200 antialiased">
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
-                  <div className="px-2 py-8 flex">
-                    No classes fot scheduled this day, Yay!{' '}
-                    <PartyPopper className="ml-4" />
-                    {selectedDate.toLocaleDateString()}
-                  </div>
+                  <div className="px-2 py-8">No upcoming classes</div>
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                 </div>
               </div>

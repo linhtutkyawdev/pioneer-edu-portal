@@ -77,32 +77,26 @@ export const sidebarLinks = [
     route: '/app',
     label: 'Home',
   },
-
-  {
-    imgURL: '/icons/upcoming.svg',
-    route: '/upcoming',
-    label: 'Upcoming Class',
-  },
   {
     imgURL: '/icons/schedule.svg',
-    route: '/upcoming',
+    route: '/app/schedule',
     label: 'Schedule',
+  },
+  {
+    imgURL: '/icons/form-elements-svgrepo-com.svg',
+    route: '/classes/applications',
+    label: 'Class Applications',
   },
   // {
   //   imgURL: '/icons/previous.svg',
   //   route: '/previous',
   //   label: 'Previous Class',
   // },
-  {
-    imgURL: '/icons/Video.svg',
-    route: '/recordings',
-    label: 'Recordings',
-  },
-  {
-    imgURL: '/icons/add-personal.svg',
-    route: '/personal-room',
-    label: 'Personal Room',
-  },
+  // {
+  //   imgURL: '/icons/add-personal.svg',
+  //   route: '/personal-room',
+  //   label: 'Personal Room',
+  // },
 ];
 
 export const avatarImages = [
