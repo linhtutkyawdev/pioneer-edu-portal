@@ -1,8 +1,6 @@
 import MeetingTypeList from '@/components/MeetingTypeList';
-import { Button } from '@/components/ui/button';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { sql } from '@vercel/postgres';
-import { Plus } from 'lucide-react';
 import JoinButton from './JoinButton';
 
 export const getDateFromTime = (time: string, date?: Date) => {
@@ -22,8 +20,8 @@ const Home = async () => {
   if (!userId) return null;
 
   const now = new Date();
-  now.setDate(12);
-  now.setHours(now.getHours() + 4);
+  // now.setDate(13);
+  // now.setHours(now.getHours() + 1);
   // now.setTime(now.getTime() - 25 * 60 * 1000);
 
   const schedule = (

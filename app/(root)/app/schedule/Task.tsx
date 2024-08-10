@@ -1,19 +1,32 @@
 import { Button } from '@/components/ui/button';
 import { clerkClient } from '@clerk/nextjs/server';
 import { sql } from '@vercel/postgres';
-import { Plus } from 'lucide-react';
+import JoinButton from '../JoinButton';
+import { getDateFromTime } from '../page';
+import RecordingButtons from './RecordingButtons';
 
-const Task = async ({ id }: { id: string }) => {
-  const task = (await sql`Select * from classes where id = ${id};`).rows[0];
-  if (!task) return null;
-  const techerName = (await clerkClient.users.getUser(task.teacher_id))
+const Task = async ({
+  id,
+  userId,
+  selectedDate,
+  isEnded,
+}: {
+  id: number;
+  userId: string;
+  selectedDate: Date;
+  isEnded?: boolean;
+}) => {
+  const classData = (await sql`Select * from classes where id = ${id};`)
+    .rows[0];
+  if (!classData) return null;
+  const techerName = (await clerkClient.users.getUser(classData.teacher_id))
     .fullName;
   return (
     <div className="bg-blue-50 rounded-md w-1/3 h-32 mx-2 overflow-hidden flex items-end">
       <div className="w-2 h-full bg-blue-1"></div>
       <div className="flex flex-col ml-4 mt-4 h-full w-full justify-center">
         <h4 className="font-sans h-16 flex items-center text-blue-700 text-lg font-semibold pb-1">
-          {task.title}
+          {classData.title}
         </h4>
         <div className="flex justify-between pr-4">
           <div className="flex w-max flex-row items-center bg-blue-100 p-2 rounded-full">
@@ -21,9 +34,18 @@ const Task = async ({ id }: { id: string }) => {
               By {techerName}
             </p>
           </div>
-          <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
-            Join Now <Plus />
-          </Button>
+          {!isEnded ? (
+            <JoinButton
+              dateTime={getDateFromTime(classData.start_hour, selectedDate)}
+              meetingId={classData.teacher_id + '-lecture-' + classData.id}
+              description={'Lecture : ' + classData.title}
+              isTeacher={userId === classData.teacher_id}
+            />
+          ) : (
+            <RecordingButtons
+              id={classData.teacher_id + '-lecture-' + classData.id}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { sql } from '@vercel/postgres';
 import { auth } from '@clerk/nextjs/server';
 import Days from './Days';
 import Task from './Task';
+import { getDateFromTime } from '../page';
 
 export const getHourString = (text: string) => {
   const t = new Date();
@@ -19,7 +20,11 @@ export const getHourString = (text: string) => {
 
 const Page = async () => {
   const { userId } = auth();
+
+  if (!userId) return null;
+
   const today = new Date();
+
   const selectedDate = today;
 
   const { rows } =
@@ -69,7 +74,13 @@ const Page = async () => {
                   </div>
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                 </div>
-                <Task id={row.class_id} />
+
+                <Task
+                  id={row.class_id}
+                  selectedDate={selectedDate}
+                  userId={userId}
+                  isEnded={getDateFromTime(row.end_hour, selectedDate) < today}
+                />
               </div>
             ))}
           </div>

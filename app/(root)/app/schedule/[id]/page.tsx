@@ -2,15 +2,23 @@ import { sql } from '@vercel/postgres';
 import { auth } from '@clerk/nextjs/server';
 import Days from '../Days';
 import Task from '../Task';
-import { PartyPopper } from 'lucide-react';
 import { getHourString } from '../page';
+import { getDateFromTime } from '../../page';
 
 const Page = async ({ params: { id } }: { params: { id: string } }) => {
   const { userId } = auth();
+
+  if (!userId) return null;
+
   const today = new Date();
+
   const selectedDate = id
     ? new Date(+today + parseInt(id) * 1000 * 60 * 60 * 24)
     : today;
+
+  today.setTime(
+    +today + parseInt(id) * 1000 * 60 * 60 * 24 + 4 * 1000 * 60 * 60,
+  );
 
   const { rows } =
     await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toLocaleDateString()} order by start_hour;`;
@@ -59,7 +67,13 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                   </div>
                   <div className="bg-gray-100 h-0.5 ml-2"></div>
                 </div>
-                <Task id={row.class_id} />
+
+                <Task
+                  id={row.class_id}
+                  selectedDate={selectedDate}
+                  userId={userId}
+                  isEnded={getDateFromTime(row.end_hour, selectedDate) < today}
+                />
               </div>
             ))}
           </div>
