@@ -16,9 +16,9 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     ? new Date(+today + parseInt(id) * 1000 * 60 * 60 * 24)
     : today;
 
-  today.setTime(
-    +today + parseInt(id) * 1000 * 60 * 60 * 24 + 4 * 1000 * 60 * 60,
-  );
+  // today.setTime(
+  //   +today + parseInt(id) * 1000 * 60 * 60 * 24 + 4 * 1000 * 60 * 60,
+  // );
 
   const { rows } =
     await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toLocaleDateString()} order by start_hour;`;
