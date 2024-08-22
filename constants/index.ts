@@ -6,27 +6,27 @@ export const adminSidebarLinks = [
   },
 
   {
-    imgURL: '/icons/teacher-svgrepo-com.svg',
-    route: '/admin/teachers',
-    label: 'Teachers',
-  },
-
-  {
-    imgURL: '/icons/form-elements-svgrepo-com.svg',
-    route: '/admin/teachers/applicants',
-    label: 'Applications',
-  },
-
-  {
     imgURL: '/icons/add-personal.svg',
     route: '/admin/users',
     label: 'Add Admin',
   },
 
   {
+    imgURL: '/icons/teacher-svgrepo-com.svg',
+    route: '/admin/teachers',
+    label: 'Teachers',
+  },
+
+  {
+    imgURL: '/icons/add-personal.svg',
+    route: '/admin/teachers/applicants',
+    label: 'Add Teacher',
+  },
+
+  {
     imgURL: '/icons/contact-svgrepo-com.svg',
     route: '/admin/contact',
-    label: 'Contact',
+    label: 'Contact Messages',
   },
 ];
 

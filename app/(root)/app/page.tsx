@@ -21,12 +21,12 @@ const Home = async () => {
 
   const now = new Date();
   // now.setDate(13);
-  // now.setHours(now.getHours() + 1);
+  // now.setHours(now.getHours() + 8);
   // now.setTime(now.getTime() - 25 * 60 * 1000);
 
   const schedule = (
     await sql`select lecture_date, start_hour, class_id from schedules 
-  where user_id = ${userId} and end_hour > ${now.toLocaleTimeString()} order by (lecture_date, start_hour) limit ${1};`
+  where user_id = ${userId} and (lecture_date = ${now.toLocaleDateString()} and end_hour > ${now.toLocaleTimeString()}) or (lecture_date > ${now.toLocaleDateString()}) order by (lecture_date, start_hour) limit ${1};`
   ).rows[0];
 
   const classData =

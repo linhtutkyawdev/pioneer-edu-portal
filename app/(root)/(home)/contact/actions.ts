@@ -39,7 +39,7 @@ export const createContact = async (formData: FormData) => {
   try {
     await sql`INSERT INTO contacts (name, email, message, is_read) VALUES ( ${data.name}, ${data.email}, ${data.message}, false);`;
     revalidatePath('/');
-    return { message: 'Contact created' };
+    return { message: 'Contact sent!' };
   } catch (error) {
     return { message: 'Failed to create contact' };
   }

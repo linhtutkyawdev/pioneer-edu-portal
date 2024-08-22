@@ -13,7 +13,7 @@ const Profile = async ({ id, title }: { id: string; title: string }) => {
         <p className="text-xl font-semibold leading-snug">
           <a href={`/teachers/${id}`}>{user.fullName}</a>
         </p>
-        <p>{title}</p>
+        {/* <p>{title}</p> */}
       </div>
       <div className="flex items-center justify-center p-3 space-x-3 border-t-2">
         <a

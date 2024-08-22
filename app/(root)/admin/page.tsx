@@ -4,7 +4,7 @@ import PrivilegeButton from './button';
 import Search from './search';
 
 const Admin = async () => {
-  const { rows } = await sql`Select * from admins;`;
+  const { rows, rowCount } = await sql`Select * from admins;`;
   const adminIdList = rows.map((row) => row.id);
   const adminList = await Promise.all(
     adminIdList.map((id) => clerkClient.users.getUser(id)),
@@ -52,7 +52,7 @@ const Admin = async () => {
                     <p>{user.primaryEmailAddress?.emailAddress}</p>
                   </td>
                   <td className="px-3 py-2">
-                    <PrivilegeButton id={user.id} />
+                    <PrivilegeButton id={user.id} disabled={rowCount === 1} />
                   </td>
                 </tr>
               );

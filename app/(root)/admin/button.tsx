@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useFormStatus } from 'react-dom';
 import { revokePrivileges } from './actions';
 
-function SubmitButton() {
+function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
 
   return (
@@ -13,13 +13,20 @@ function SubmitButton() {
       className="w-40"
       type="submit"
       aria-disabled={pending}
+      disabled={disabled}
     >
       {pending ? 'Revoking...' : 'Revoke Previleges'}
     </Button>
   );
 }
 
-export default function PrivilegeButton({ id }: { id: string }) {
+export default function PrivilegeButton({
+  id,
+  disabled,
+}: {
+  id: string;
+  disabled: boolean;
+}) {
   return (
     <form
       action={(formData) => {
@@ -28,7 +35,7 @@ export default function PrivilegeButton({ id }: { id: string }) {
       }}
     >
       <input type="text" name="id" required hidden value={id} readOnly />
-      <SubmitButton />
+      <SubmitButton disabled={disabled} />
     </form>
   );
 }

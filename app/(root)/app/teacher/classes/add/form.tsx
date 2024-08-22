@@ -7,14 +7,21 @@ import Tags from './Tags';
 import ImageUpload from './ImgaeUpload';
 import DateTimePicker from './DateTimePicker';
 import { Save } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+import { useRef } from 'react';
 const Form = () => {
   const { isSignedIn, user } = useUser();
+  const { toast } = useToast();
+  const ref = useRef<HTMLFormElement>(null);
   if (!isSignedIn) return null;
   return (
     <form
-      action={(formData) => {
-        confirm('Are you sure you want to add this class?') &&
-          createClass(formData);
+      ref={ref}
+      action={async (formData) => {
+        if (confirm('Are you sure you want to add this class?')) {
+          toast({ title: (await createClass(formData)).message });
+          ref.current?.reset();
+        }
       }}
     >
       <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">

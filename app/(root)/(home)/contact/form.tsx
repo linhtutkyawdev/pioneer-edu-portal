@@ -2,8 +2,10 @@
 
 import { useRef } from 'react';
 import { createContact } from './actions';
+import { useToast } from '@/components/ui/use-toast';
 
 const Form = () => {
+  const { toast } = useToast();
   const ref = useRef<HTMLFormElement>(null);
   return (
     <form
@@ -11,6 +13,7 @@ const Form = () => {
       action={async (formData: FormData) => {
         const res = await createContact(formData);
         res?.message && ref.current?.reset();
+        res?.message && toast({ title: res.message });
       }}
       className="space-y-6"
     >

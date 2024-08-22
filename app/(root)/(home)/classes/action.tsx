@@ -79,7 +79,7 @@ export async function createStudentApplication(formData: FormData) {
       ) {
         await sql`INSERT INTO schedules
         (USER_ID, CLASS_ID, LECTURE_DATE, START_HOUR, END_HOUR) VALUES
-        (${data.student_id}, ${data.class_id}, ${start.toISOString().split('T')[0]}, ${classData.start_hour}, ${classData.end_hour});`;
+        (${data.student_id}, ${data.class_id}, ${start.toLocaleDateString()}, ${classData.start_hour}, ${classData.end_hour});`;
       }
       start = new Date(+start + dayMilliseconds);
     }

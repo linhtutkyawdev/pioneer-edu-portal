@@ -205,7 +205,7 @@ export async function createClass(formData: FormData) {
     }
 
     revalidatePath('/');
-    return { message: 'Success' };
+    return { message: 'Successfully created the course' };
   } catch (e: any) {
     return { message: e.message };
   }
