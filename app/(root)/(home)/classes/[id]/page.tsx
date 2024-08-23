@@ -2,10 +2,13 @@ import { sql } from '@vercel/postgres';
 import TeacherProfile from '../../teachers/[id]/page';
 import { Button } from '@/components/ui/button';
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { ArrowBigRight, Send } from 'lucide-react';
+import { ArrowBigRight, Delete, Edit, Send } from 'lucide-react';
 import { getHourString } from '@/app/(root)/app/schedule/page';
 import { createStudentApplication } from '../action';
 import { SignInButton } from '@clerk/nextjs';
+import { deleteClass } from './action';
+import DeleteForm from './form';
+import EditForm from './editForm';
 
 export type classData = {
   id: number;
@@ -119,15 +122,29 @@ export default async function Page({ params }: { params: { id: string } }) {
           />
           <div className="p-6 pb-12 m-4 mx-auto mt-[-4.5rem] space-y-6 lg:max-w-2xl sm:px-10 sm:mx-12 lg:rounded-md">
             <div className="space-y-2">
-              <a
-                rel="noopener noreferrer"
-                href="#"
-                className="inline-block text-2xl font-semibold sm:text-3xl"
-              >
-                {classData.title}
-              </a>
-            </div>
-            <p>{classData.description}</p>
+              <div className="text-2xl font-semibold sm:text-3xl flex items-center">
+                {isClassTeacher ? (
+                  <EditForm
+                    line={1}
+                    class_id={classData.id}
+                    fieldName="title"
+                    value={classData.title}
+                  />
+                ) : (
+                  classData.title
+                )}
+              </div>
+            </div>{' '}
+            {isClassTeacher ? (
+              <EditForm
+                line={4}
+                class_id={classData.id}
+                fieldName="description"
+                value={classData.description}
+              />
+            ) : (
+              classData.description
+            )}
           </div>
           <div className="flex justify-evenly">
             <div className="relative border-white border-4 rounded-md bg-gradient-to-br from-teal-300/50 to-teal-400/70 backdrop-blur-lg">
@@ -179,14 +196,14 @@ export default async function Page({ params }: { params: { id: string } }) {
               </Button>
             </SignInButton>
           ) : isClassTeacher ? (
-            <a
-              className="w-max mx-auto mb-4"
-              href={`/classes/${classData.id}/applicants`}
-            >
-              <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
-                Check Student Applications <Send className="ml-2" />
-              </Button>
-            </a>
+            <div className="flex justify-center space-x-4">
+              <a className="mb-4" href={`/classes/${classData.id}/applicants`}>
+                <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
+                  Check Student Applications <Send className="ml-2" />
+                </Button>
+              </a>
+              <DeleteForm id={classData.id} />
+            </div>
           ) : isClassStudent ? (
             <div className="w-max mx-auto relative">
               <Button

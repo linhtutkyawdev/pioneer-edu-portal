@@ -28,7 +28,7 @@ const Page = async () => {
   const selectedDate = today;
 
   const { rows } =
-    await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toISOString().split('T')[0]} order by start_hour;`;
+    await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toLocaleDateString()} order by start_hour;`;
 
   return (
     <div className="container">

@@ -41,6 +41,14 @@ export default function DenyButton({
     >
       <input type="text" name="id" required hidden value={id} readOnly />
       <input
+        type="text"
+        name="class_id"
+        required
+        hidden
+        value={class_id}
+        readOnly
+      />
+      <input
         type="number"
         name="class_id"
         required

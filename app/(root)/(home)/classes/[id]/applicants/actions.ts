@@ -41,6 +41,7 @@ export async function grantPrivileges(formData: FormData) {
 export async function rejectApplication(formData: FormData) {
   const parse = schema.safeParse({
     id: formData.get('id'),
+    class_id: parseInt(formData.get('class_id') as string),
   });
 
   if (!parse.success) {
@@ -50,10 +51,10 @@ export async function rejectApplication(formData: FormData) {
   const data = parse.data;
 
   try {
-    await sql`UPDATE student_applicants set status = 'rejected' WHERE student_id = ${data.id};`;
+    await sql`UPDATE student_applicants set status = 'rejected' WHERE student_id = ${data.id} and class_id = ${data.class_id};`;
     revalidatePath('/');
-    // return { message: "Granted privileges" };
+    return { message: 'Rejected' };
   } catch (e) {
-    // return { message: "Failed to grant privileges" };
+    return { message: 'Failed to reject' };
   }
 }

@@ -26,7 +26,7 @@ const Home = async () => {
 
   const schedule = (
     await sql`select lecture_date, start_hour, class_id from schedules 
-  where user_id = ${userId} and (lecture_date = ${now.toLocaleDateString()} and end_hour > ${now.toLocaleTimeString()}) or (lecture_date > ${now.toLocaleDateString()}) order by (lecture_date, start_hour) limit ${1};`
+  where user_id = ${userId} and ((lecture_date = ${now.toLocaleDateString()} and end_hour > ${now.toLocaleTimeString()}) or (lecture_date > ${now.toLocaleDateString()})) order by (lecture_date, start_hour) limit ${1};`
   ).rows[0];
 
   const classData =
@@ -71,6 +71,7 @@ const Home = async () => {
   return (
     <section className="flex size-full flex-col gap-5 text-white">
       {schedule &&
+      schedule.lecture_date === now.toLocaleDateString() &&
       PRE_JOIN_AVAILABLE_TIME + now.getTime() >=
         getDateFromTime(classData.start_hour, now).getTime() ? (
         <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">

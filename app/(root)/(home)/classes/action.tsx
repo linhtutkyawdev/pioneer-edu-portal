@@ -1,5 +1,4 @@
 'use server';
-'use server';
 
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
@@ -39,23 +38,23 @@ export async function createStudentApplication(formData: FormData) {
     // get existing schedules
     const { rows: r1 } = await sql`SELECT * FROM schedules
       WHERE USER_ID = ${data.student_id}
-      AND LECTURE_DATE >= ${classData.start_date.toISOString().split('T')[0]}
-      AND LECTURE_DATE < ${classData.end_date.toISOString().split('T')[0]}
+      AND LECTURE_DATE >= ${classData.start_date.toLocaleDateString()}
+      AND LECTURE_DATE < ${classData.end_date.toLocaleDateString()}
       AND START_HOUR = ${classData.start_hour}
       ORDER BY LECTURE_DATE;`;
 
     const { rows: r2 } = await sql`SELECT * FROM schedules
       WHERE USER_ID = ${data.student_id}
-      AND LECTURE_DATE >= ${classData.start_date.toISOString().split('T')[0]}
-      AND LECTURE_DATE < ${classData.end_date.toISOString().split('T')[0]}
+      AND LECTURE_DATE >= ${classData.start_date.toLocaleDateString()}
+      AND LECTURE_DATE < ${classData.end_date.toLocaleDateString()}
       AND START_HOUR > ${classData.start_hour}
       AND START_HOUR < ${classData.end_hour}
       ORDER BY LECTURE_DATE;`;
 
     const { rows: r3 } = await sql`SELECT * FROM schedules
       WHERE USER_ID = ${data.student_id}
-      AND LECTURE_DATE >= ${classData.start_date.toISOString().split('T')[0]}
-      AND LECTURE_DATE < ${classData.end_date.toISOString().split('T')[0]}
+      AND LECTURE_DATE >= ${classData.start_date.toLocaleDateString()}
+      AND LECTURE_DATE < ${classData.end_date.toLocaleDateString()}
       AND START_HOUR < ${classData.start_hour}
       AND END_HOUR > ${classData.start_hour}
       ORDER BY LECTURE_DATE;`;

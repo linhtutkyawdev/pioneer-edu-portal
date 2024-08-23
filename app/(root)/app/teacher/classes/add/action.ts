@@ -128,23 +128,23 @@ export async function createClass(formData: FormData) {
     // get existing schedules
     const { rows: r1 } = await sql`SELECT * FROM schedules
       WHERE USER_ID = ${data.teacher_id}
-      AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
-      AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
+      AND LECTURE_DATE >= ${data.startDate.toLocaleDateString()}
+      AND LECTURE_DATE < ${data.endDate.toLocaleDateString()}
       AND START_HOUR = ${data.startHour}
       ORDER BY LECTURE_DATE;`;
 
     const { rows: r2 } = await sql`SELECT * FROM schedules
       WHERE USER_ID = ${data.teacher_id}
-      AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
-      AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
+      AND LECTURE_DATE >= ${data.startDate.toLocaleDateString()}
+      AND LECTURE_DATE < ${data.endDate.toLocaleDateString()}
       AND START_HOUR > ${data.startHour}
       AND START_HOUR < ${data.endHour}
       ORDER BY LECTURE_DATE;`;
 
     const { rows: r3 } = await sql`SELECT * FROM schedules
       WHERE USER_ID = ${data.teacher_id}
-      AND LECTURE_DATE >= ${data.startDate.toISOString().split('T')[0]}
-      AND LECTURE_DATE < ${data.endDate.toISOString().split('T')[0]}
+      AND LECTURE_DATE >= ${data.startDate.toLocaleDateString()}
+      AND LECTURE_DATE < ${data.endDate.toLocaleDateString()}
       AND START_HOUR < ${data.startHour}
       AND END_HOUR > ${data.startHour}
       ORDER BY LECTURE_DATE;`;
@@ -181,7 +181,7 @@ export async function createClass(formData: FormData) {
       LECTURE_DAYS, TOTAL_LECTURE_DAY_COUNT, 
       START_HOUR, END_HOUR, HOUR_PER_DAY, STUDENT_LIMIT, TAGS) VALUES 
       (${data.teacher_id}, ${data.title}, ${data.description}, ${bannerUrl}, 
-      ${data.startDate.toISOString().split('T')[0]}, ${data.endDate.toISOString().split('T')[0]}, ${data.dayCount}, 
+      ${data.startDate.toLocaleDateString()}, ${data.endDate.toLocaleDateString()}, ${data.dayCount}, 
       ${data.lectureDays}, ${data.totalLectureDayCount}, 
       ${data.startHour}, ${data.endHour}, ${data.hourPerDay}, ${data.studentLimit}, ${data.tags}) RETURNING id;`
     ).rows[0].id as number;
@@ -199,7 +199,7 @@ export async function createClass(formData: FormData) {
       ) {
         await sql`INSERT INTO schedules
         (USER_ID, CLASS_ID, LECTURE_DATE, START_HOUR, END_HOUR) VALUES
-        (${data.teacher_id}, ${id}, ${start.toISOString().split('T')[0]}, ${data.startHour}, ${data.endHour});`;
+        (${data.teacher_id}, ${id}, ${start.toLocaleDateString()}, ${data.startHour}, ${data.endHour});`;
       }
       start = new Date(+start + dayMilliseconds);
     }
