@@ -29,9 +29,9 @@ const Home = () => {
         <Features />
       </div>
 
-      <div id="team" className="pt-20 -mb-20">
+      {/* <div id="team" className="pt-20 -mb-20">
         <Team />
-      </div>
+      </div> */}
 
       <div id="contact" className="pt-32">
         <Contact />

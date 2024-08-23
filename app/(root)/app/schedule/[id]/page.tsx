@@ -29,9 +29,11 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         <section className="header">
           <div>
             <div className="mt-12 pl-4 pb-1">
-              <p className="font-thin text-white">Today</p>
+              {parseInt(id) === 0 && (
+                <p className="font-thin text-white">Today</p>
+              )}
               <h4 className="font-medium text-2xl">
-                {today.toLocaleDateString('default', {
+                {selectedDate.toLocaleDateString('default', {
                   weekday: 'long',
                   month: 'long',
                   day: 'numeric',

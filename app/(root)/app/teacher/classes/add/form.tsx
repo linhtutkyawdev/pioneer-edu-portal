@@ -19,8 +19,9 @@ const Form = () => {
       ref={ref}
       action={async (formData) => {
         if (confirm('Are you sure you want to add this class?')) {
-          toast({ title: (await createClass(formData)).message });
-          ref.current?.reset();
+          const msg = (await createClass(formData)).message;
+          toast({ title: msg });
+          if (msg === 'Class created successfully') ref.current?.reset();
         }
       }}
     >

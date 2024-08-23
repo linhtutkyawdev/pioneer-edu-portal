@@ -6,7 +6,6 @@ import { ArrowBigRight, Delete, Edit, Send } from 'lucide-react';
 import { getHourString } from '@/app/(root)/app/schedule/page';
 import { createStudentApplication } from '../action';
 import { SignInButton } from '@clerk/nextjs';
-import { deleteClass } from './action';
 import DeleteForm from './form';
 import EditForm from './editForm';
 
@@ -120,7 +119,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             alt=""
             className="w-full h-60 sm:h-96"
           />
-          <div className="p-6 pb-12 m-4 mx-auto mt-[-4.5rem] space-y-6 lg:max-w-2xl sm:px-10 sm:mx-12 lg:rounded-md">
+          <div className="p-6 pb-12 m-4 mx-auto mt-[-4.5rem] bg-black/30 space-y-6 lg:max-w-2xl sm:px-10 sm:mx-12 lg:rounded-md">
             <div className="space-y-2">
               <div className="text-2xl font-semibold sm:text-3xl flex items-center">
                 {isClassTeacher ? (
@@ -146,7 +145,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               classData.description
             )}
           </div>
-          <div className="flex justify-evenly">
+          <div className="flex justify-evenly px-4">
             <div className="relative border-white border-4 rounded-md bg-gradient-to-br from-teal-300/50 to-teal-400/70 backdrop-blur-lg">
               <div className="bg-white p-2 text-center w-full font-semibold text-3xl text-black">
                 TEACHER

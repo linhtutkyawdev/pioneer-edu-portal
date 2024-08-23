@@ -2,11 +2,9 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import Navbar from '@/components/Navbar';
-import { SignedIn } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 import { sql } from '@vercel/postgres';
 import { User2 } from 'lucide-react';
-import Footer from '../(home)/footer';
 import Sidebar from '@/components/Sidebar';
 import StreamVideoProvider from '@/providers/StreamClientProvider';
 

@@ -6,6 +6,9 @@ import Search from '../../../../admin/search';
 import Select from '../../../../admin/contact/select';
 import { classData } from '../page';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const Teachers = async ({ classData }: { classData: classData }) => {
   const { rows } =
     await sql`Select * from student_applicants where class_id = ${classData.id}`;

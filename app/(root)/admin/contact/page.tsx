@@ -5,6 +5,9 @@ import DeleteButton from './delete_button';
 import Select from './select';
 import CloseButton from './close_button';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const Users = async () => {
   const unreadContactRows = (
     await sql`Select * from contacts where is_read = false order by id;`

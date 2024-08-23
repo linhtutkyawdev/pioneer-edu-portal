@@ -3,6 +3,9 @@ import { sql } from '@vercel/postgres';
 import CancelButton from './delete_button';
 import Search from '@/app/(root)/admin/search';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const TableBody = async ({
   user_id,
   class_id,

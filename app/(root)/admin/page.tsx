@@ -3,6 +3,9 @@ import { sql } from '@vercel/postgres';
 import PrivilegeButton from './button';
 import Search from './search';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const Admin = async () => {
   const { rows, rowCount } = await sql`Select * from admins;`;
   const adminIdList = rows.map((row) => row.id);

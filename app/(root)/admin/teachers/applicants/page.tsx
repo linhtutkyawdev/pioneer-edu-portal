@@ -5,6 +5,9 @@ import AcceptButton from './accept_button';
 import DenyButton from './deny_button';
 import Select from '../../contact/select';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const Users = async () => {
   const { rows: pendingRows } =
     await sql`Select * from teacher_applicants where status = 'pending';`;

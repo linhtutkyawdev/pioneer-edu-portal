@@ -38,7 +38,7 @@ export const ClassBody = async ({ row }: { row: any }) => {
       <div className="flex-1 flex flex-col p-6">
         <div className="flex-1">
           <header className="mb-2">
-            <h2 className="text-xl font-extrabold leading-snug h-16 overflow-hidden">
+            <h2 className="text-xl font-extrabold leading-snug h-14 overflow-hidden">
               {row.title}
             </h2>
             <h3 className="font-semibold text-sm">
