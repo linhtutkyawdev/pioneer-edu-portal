@@ -9,7 +9,7 @@ import { User2 } from 'lucide-react';
 import Footer from './footer';
 
 export const metadata: Metadata = {
-  title: 'YOOM',
+  title: 'Pioneer Edu Portal',
   description: 'A workspace for your team, powered by Stream Chat and Clerk.',
 };
 

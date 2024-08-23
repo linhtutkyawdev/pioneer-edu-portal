@@ -52,3 +52,13 @@ CREATE TABLE STUDENT_APPLICANTS(
   STATUS TEXT NOT NULL,
   CONSTRAINT STUDENT_APPLICANT_ID PRIMARY KEY (CLASS_ID,STUDENT_ID)
 );
+
+INSERT INTO ADMINS VALUES ('user_2iitXEsK3qBS1VDBMLqUeOIJAUT');
+
+// drop table admins;
+// drop table teachers;
+// drop table TEACHER_APPLICANTS;
+// drop table contacts;
+// drop table classes;
+// drop table schedules;
+// drop table Student_APPLICANTS;

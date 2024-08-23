@@ -11,7 +11,7 @@ import Sidebar from '@/components/Sidebar';
 import StreamVideoProvider from '@/providers/StreamClientProvider';
 
 export const metadata: Metadata = {
-  title: 'YOOM',
+  title: 'Pioneer Edu Portal',
   description: 'A workspace for your team, powered by Stream Chat and Clerk.',
 };
 
