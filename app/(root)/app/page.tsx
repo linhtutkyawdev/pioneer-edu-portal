@@ -20,9 +20,9 @@ const Home = async () => {
   if (!userId) return null;
 
   const now = new Date();
-  // now.setDate(13);
-  // now.setHours(now.getHours() + 8);
-  // now.setTime(now.getTime() - 25 * 60 * 1000);
+
+  now.setDate(30); // date
+  now.setHours(9, 15); // hour, min?
 
   const schedule = (
     await sql`select lecture_date, start_hour, class_id from schedules 
@@ -71,7 +71,7 @@ const Home = async () => {
   return (
     <section className="flex size-full flex-col gap-5 text-white">
       {schedule &&
-      schedule.lecture_date === now.toLocaleDateString() &&
+      lectureDate.toLocaleDateString() === now.toLocaleDateString() &&
       PRE_JOIN_AVAILABLE_TIME + now.getTime() >=
         getDateFromTime(classData.start_hour, now).getTime() ? (
         <div className="h-[303px] w-full rounded-[20px] bg-hero bg-cover">
