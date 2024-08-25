@@ -27,6 +27,8 @@ const Page = async () => {
 
   const selectedDate = today;
 
+  // selectedDate.setHours(7, 0); // hour, min?
+
   const { rows } =
     await sql`Select * from schedules where user_id = ${userId} and lecture_date = ${selectedDate.toLocaleDateString()} order by start_hour;`;
 

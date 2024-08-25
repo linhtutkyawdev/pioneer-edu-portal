@@ -21,7 +21,7 @@ const Form = () => {
         if (confirm('Are you sure you want to add this class?')) {
           const msg = (await createClass(formData)).message;
           toast({ title: msg });
-          if (msg === 'Class created successfully') ref.current?.reset();
+          if (msg === 'Successfully created the course') ref.current?.reset();
         }
       }}
     >

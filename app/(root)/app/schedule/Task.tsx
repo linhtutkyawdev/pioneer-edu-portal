@@ -37,13 +37,25 @@ const Task = async ({
           {!isEnded ? (
             <JoinButton
               dateTime={getDateFromTime(classData.start_hour, selectedDate)}
-              meetingId={classData.teacher_id + '-lecture-' + classData.id}
+              meetingId={
+                classData.teacher_id +
+                '-lecture-' +
+                classData.id +
+                '-lectureDate-' +
+                selectedDate.toLocaleDateString('en-US').replace(/\//g, '-')
+              }
               description={'Lecture : ' + classData.title}
               isTeacher={userId === classData.teacher_id}
             />
           ) : (
             <RecordingButtons
-              id={classData.teacher_id + '-lecture-' + classData.id}
+              id={
+                classData.teacher_id +
+                '-lecture-' +
+                classData.id +
+                '-lectureDate-' +
+                selectedDate.toLocaleDateString('en-US').replace(/\//g, '-')
+              }
             />
           )}
         </div>

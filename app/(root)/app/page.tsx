@@ -21,8 +21,8 @@ const Home = async () => {
 
   const now = new Date();
 
-  now.setDate(30); // date
-  now.setHours(9, 15); // hour, min?
+  // now.setDate(30); // date
+  // now.setHours(6, 0); // hour, min?
 
   const schedule = (
     await sql`select lecture_date, start_hour, class_id from schedules 
@@ -117,7 +117,13 @@ const Home = async () => {
               </div>
               <JoinButton
                 dateTime={getDateFromTime(schedule.start_hour, lectureDate)}
-                meetingId={classData.teacher_id + '-lecture-' + classData.id}
+                meetingId={
+                  classData.teacher_id +
+                  '-lecture-' +
+                  classData.id +
+                  '-lectureDate-' +
+                  lectureDate.toLocaleDateString('en-US').replace(/\//g, '-')
+                }
                 description={'Lecture : ' + classData.title}
                 isTeacher={userId === classData.teacher_id}
               />

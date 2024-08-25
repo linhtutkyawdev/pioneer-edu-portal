@@ -31,7 +31,9 @@ const JoinButton = ({
 
     try {
       //   const meetingId = crypto.randomUUID();
+
       const call = client.call('default', meetingId);
+      if (!call) throw new Error('Failed to create meeting');
       if (!call) throw new Error('Failed to create meeting');
       const startsAt = dateTime.toISOString();
       await call.getOrCreate({

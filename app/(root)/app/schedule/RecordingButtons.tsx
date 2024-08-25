@@ -6,13 +6,24 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { useGetCallById } from '@/hooks/useGetCallById';
+import { AlertOctagon } from 'lucide-react';
 
 const RecordingButtons = ({ id }: { id: string }) => {
   const router = useRouter();
   const { toast } = useToast();
   const { call, isCallLoading } = useGetCallById(id);
 
-  if (isCallLoading || !call)
+  if (!call)
+    return (
+      <Button
+        disabled
+        className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110"
+      >
+        No recordings <AlertOctagon className="w-4 h-4 ml-2" />
+      </Button>
+    );
+
+  if (isCallLoading)
     return (
       <Button className="transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
         Loading...
