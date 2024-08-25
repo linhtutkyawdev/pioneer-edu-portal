@@ -21,8 +21,7 @@ const Home = async () => {
 
   const now = new Date();
 
-  // now.setDate(30); // date
-  // now.setHours(6, 0); // hour, min?
+  now.setHours(6, 45); // hour, min?
 
   const schedule = (
     await sql`select lecture_date, start_hour, class_id from schedules 
@@ -121,7 +120,7 @@ const Home = async () => {
                   classData.teacher_id +
                   '-lecture-' +
                   classData.id +
-                  '-lectureDate-' +
+                  '-ldate-' +
                   lectureDate.toLocaleDateString('en-US').replace(/\//g, '-')
                 }
                 description={'Lecture : ' + classData.title}

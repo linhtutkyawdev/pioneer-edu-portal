@@ -41,7 +41,7 @@ const Task = async ({
                 classData.teacher_id +
                 '-lecture-' +
                 classData.id +
-                '-lectureDate-' +
+                '-ldate-' +
                 selectedDate.toLocaleDateString('en-US').replace(/\//g, '-')
               }
               description={'Lecture : ' + classData.title}
@@ -53,7 +53,7 @@ const Task = async ({
                 classData.teacher_id +
                 '-lecture-' +
                 classData.id +
-                '-lectureDate-' +
+                '-ldate-' +
                 selectedDate.toLocaleDateString('en-US').replace(/\//g, '-')
               }
             />
