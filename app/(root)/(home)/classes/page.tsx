@@ -5,6 +5,7 @@ import { Castle, Send } from 'lucide-react';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { createStudentApplication } from './action';
 import { SignInButton } from '@clerk/nextjs';
+import Form from './form';
 
 export const ClassBody = async ({ row }: { row: any }) => {
   const { userId } = auth();
@@ -88,14 +89,7 @@ export const ClassBody = async ({ row }: { row: any }) => {
               </Button>
             </div>
           ) : (
-            <form action={createStudentApplication}>
-              <input type="number" name="class_id" hidden value={row.id} />
-              <input type="text" name="user_id" hidden value={userId} />
-
-              <Button className="w-max mx-auto mb-4 transition-all duration-200 active:scale-100 bg-gradient-to-tl from-teal-400 to-blue-1 hover:from-emerald-300 hover:to-blue-500 hover:scale-110">
-                Apply Now <Send className="ml-2" />
-              </Button>
-            </form>
+            <Form classId={row.id} userId={userId} />
           )}
         </div>
       </div>
